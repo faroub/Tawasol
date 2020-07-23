@@ -48,7 +48,10 @@ public:
 
     void enableSetSettingAction(const bool a_enable);
 
-    void showStatusMessage(const QString &message);
+    void showStatusMessage(const QString &a_message);
+
+    void showErrorMessage(const QString &a_message, const QString &a_error);
+
 
 
 
@@ -64,7 +67,7 @@ private:
     void setupToolBar();
 
 
-    Setting *mp_settingDialog = nullptr;
+    Setting *mp_setting = nullptr;
 
     io::SerialPort *mp_serialPort = nullptr;
 

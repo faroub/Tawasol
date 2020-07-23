@@ -16,9 +16,9 @@
 
 
 gui::MainWindow::MainWindow(QWidget *ap_applicationGUI)
-                : mp_settingDialog(new Setting(this)),
-                  mp_serialPort(new io::SerialPort(this,mp_settingDialog)),
-                  mp_statusMessage(new QLabel("Not connected ...",this))
+                : mp_setting(new Setting(this)),
+                  mp_serialPort(new io::SerialPort(this,mp_setting)),
+                  mp_statusMessage(new QLabel("Disconnected ...",this))
 
 {
 
@@ -86,9 +86,9 @@ void gui::MainWindow::enableDisconnectionAction(const bool a_enable)
     }
 }
 
-void gui::MainWindow::showStatusMessage(const QString &message)
+void gui::MainWindow::showStatusMessage(const QString &a_message)
 {
-    mp_statusMessage->setText(message);
+    mp_statusMessage->setText(a_message);
 
 }
 void gui::MainWindow::about()
@@ -101,7 +101,11 @@ void gui::MainWindow::about()
                                             "(https://github.com/faroub)"));
 }
 
+void gui::MainWindow::showErrorMessage(const QString &a_message, const QString &a_error)
+{
+    QMessageBox::critical(this, a_message, a_error);
 
+}
 void gui::MainWindow::setupMenuBar()
 {
     QMenu *lp_menuIODevice = menuBar()->addMenu(tr("IO&Device"));
@@ -131,7 +135,7 @@ void gui::MainWindow::setupActions()
     mp_disconnectAction = new QAction(QIcon(":/disconnect.png"),tr( "&Disconnect"), this);
     connect(mp_disconnectAction, SIGNAL(triggered()), mp_serialPort, SLOT(closeSerialPort()));
     mp_setSettingAction = new QAction(QIcon(":/settings.png"),tr("&Setting"), this);
-    connect(mp_setSettingAction, SIGNAL(triggered()), mp_settingDialog, SLOT(exec()));
+    connect(mp_setSettingAction, SIGNAL(triggered()), mp_setting, SLOT(exec()));
     mp_setLocalEcho = new QAction(tr("Local &echo"), this);
     mp_setLocalEcho->setCheckable(true);
     connect(mp_setLocalEcho, SIGNAL(toggled(bool)), mp_serialPort, SLOT(enableLocalEcho(const bool)));

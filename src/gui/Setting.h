@@ -35,8 +35,10 @@ public:
 
     struct portParameters {
         QString m_name;
+        QSerialPort::OpenModeFlag m_operationMode;
+        QString m_operationModeString;
         qint32 m_baudRate;
-        QString m_BaudRateString;
+        QString m_baudRateString;
         QSerialPort::DataBits m_frameSize;
         QString m_frameSizeString;
         QSerialPort::Parity m_parityMode;
@@ -68,6 +70,8 @@ private:
     portParameters *mp_portParameters;
 
     QComboBox *mp_portComboBox = nullptr;
+
+    QComboBox *mp_operationModeComboBox = nullptr;
 
     QComboBox *mp_baudRateComboBox = nullptr;
 
