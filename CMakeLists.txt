@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.1.0)
 
-project(IOCOMMUNICATION)
+project(TAWASOL)
 
 # flags
 set(CMAKE_AUTOMOC ON)

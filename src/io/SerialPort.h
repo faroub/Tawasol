@@ -45,6 +45,9 @@ private slots:
     void handleError(QSerialPort::SerialPortError l_error);
 
 public:
+
+    bool isOpen() const;
+
     SerialPort(gui::MainWindow *ap_mainWindow, gui::Setting *ap_setting, gui::Console *ap_console);
 
     ~SerialPort();

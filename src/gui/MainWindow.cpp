@@ -34,6 +34,7 @@ gui::MainWindow::MainWindow(QWidget *ap_applicationGUI)
 
     enableDisconnectionAction(false);
     enableConnectionAction(true);
+    mp_console->setEnabled(false);
 
 
 
@@ -46,10 +47,10 @@ gui::MainWindow::MainWindow(QWidget *ap_applicationGUI)
         ap_applicationGUI->setMinimumSize(400, 400);
     }
 
-    //mp_console->setEnabled(false);
 
 
-    setWindowTitle("I/O Application GUI");
+
+    setWindowTitle("TAWASOL");
     setCentralWidget(mp_console);
 
 
@@ -101,7 +102,7 @@ void gui::MainWindow::showStatusMessage(const QString &a_message)
 }
 void gui::MainWindow::about()
 {
-    QMessageBox::about(this, tr("About"),tr("This Simple Qt Application allows you to communicate\n"
+    QMessageBox::about(this, tr("About"),tr("TAWASOL is a Simple Qt Application allows you to communicate\n"
                                             " with a device connected to the serial port."
                                             "\n"
                                             "\n"
@@ -164,4 +165,33 @@ void gui::MainWindow::setupToolBar()
     addToolBar(lp_fileToolBar);
 }
 
+void gui::MainWindow::closeEvent(QCloseEvent *event)
+{
+    if (closeWindow()) {
+        mp_serialPort->closeSerialPort();
+        event->accept();
+    }
+    else {
+        event->ignore();
+    }
+
+}
+
+bool gui::MainWindow::closeWindow()
+{
+    if (!mp_serialPort->isOpen())
+    {
+        return 1;
+
+    } else {
+        const QMessageBox::StandardButton answer = QMessageBox::warning(
+                    this,
+                    tr("Close TAWASOL"),
+                    tr("A connection is still open.\n"
+                    "Close anyway?"),
+                    QMessageBox::Yes | QMessageBox::No);
+        return answer == QMessageBox::Yes;
+    }
+
+}
 

@@ -64,7 +64,7 @@ void io::SerialPort::openSerialPort()
 
 void io::SerialPort::closeSerialPort()
 {
-    if (mp_serialPort->isOpen())
+    if (isOpen())
     {
         mp_serialPort->close();
     }
@@ -164,5 +164,10 @@ void io::SerialPort::enableLocalEcho(const bool a_enable)
 
 }
 
+
+bool io::SerialPort::isOpen() const
+{
+    return mp_serialPort->isOpen();
+}
 
 

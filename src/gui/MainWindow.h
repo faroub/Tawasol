@@ -57,9 +57,15 @@ public:
 
 
 protected:
-
+    /** The event handler that receives the Main Window close event
+        */
+    void closeEvent(QCloseEvent *event) override;
 
 private:
+
+    /** user input condition for the Main Window close event
+        */
+    bool closeWindow();
 
     void setupActions();
 
