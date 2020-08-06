@@ -1,5 +1,6 @@
 #include <QDebug>
 #include "Setting.h"
+#include "SerialPort.h"
 #include <QGridLayout>
 #include <QGroupBox>
 #include <QComboBox>
@@ -102,7 +103,7 @@ gui::Setting::Setting(QWidget *ap_parent) :
     lp_settingGridLayout->addWidget(lp_selectPortParametersGroupBox,0,3,1,3);
     lp_settingGridLayout->addLayout(lp_hLayout,1,4,1,2);
 
-    connect(mp_okButton, SIGNAL(clicked()), this, SLOT(update()));
+    connect(mp_okButton, SIGNAL(clicked()), this, SLOT(update()));  
     connect(mp_cancelButton, SIGNAL(clicked()), this, SLOT(close()));
     connect(mp_refreshButton, SIGNAL(clicked()), this, SLOT(refresh()));
     connect(mp_portComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged),

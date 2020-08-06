@@ -2,18 +2,24 @@
 #include "SerialPort.h"
 #include "MainWindow.h"
 #include "Setting.h"
+#include "Console.h"
 
 
 
 
-io::SerialPort::SerialPort(gui::MainWindow *ap_mainWindow, gui::Setting *ap_setting)
+io::SerialPort::SerialPort(gui::MainWindow *ap_mainWindow, gui::Setting *ap_setting, gui::Console *ap_console)
+              : QObject(ap_mainWindow)
 {
     mp_mainWindow = ap_mainWindow;
     mp_setting = ap_setting;
-    mp_serialPort = new QSerialPort;
+    mp_console = ap_console;
+    mp_serialPort = new QSerialPort(this);
 
     connect(mp_serialPort, &QSerialPort::errorOccurred, this, &SerialPort::handleError);
 
+    connect(mp_serialPort, &QSerialPort::readyRead, this, &SerialPort::receiveData);
+
+    connect(mp_console, &gui::Console::sendData, this, &SerialPort::sendData);
 
 
 }
@@ -23,17 +29,21 @@ io::SerialPort::~SerialPort()
 
 }
 
-
-void io::SerialPort::openSerialPort()
+void io::SerialPort::setSerialPortParameters()
 {
-    mp_mainWindow->enableConnectionAction(false);
-    mp_mainWindow->enableDisconnectionAction(true);
     mp_serialPort->setPortName(mp_setting->getPortParameters()->m_name);
     mp_serialPort->setBaudRate(mp_setting->getPortParameters()->m_baudRate);
     mp_serialPort->setDataBits(mp_setting->getPortParameters()->m_frameSize);
     mp_serialPort->setParity(mp_setting->getPortParameters()->m_parityMode);
     mp_serialPort->setStopBits(mp_setting->getPortParameters()->m_stopBits);
     mp_serialPort->setFlowControl(mp_setting->getPortParameters()->m_flowControl);
+
+}
+void io::SerialPort::openSerialPort()
+{
+
+    setSerialPortParameters();
+
     if (mp_serialPort->open(mp_setting->getPortParameters()->m_operationMode))
     {
         mp_mainWindow->enableConnectionAction(false);
@@ -65,14 +75,16 @@ void io::SerialPort::closeSerialPort()
 
 }
 
-void io::SerialPort::sendFrame(const QByteArray &data)
+void io::SerialPort::sendData(const QByteArray &data)
 {
+    mp_serialPort->write(data);
 
 }
 
-void io::SerialPort::readFrame()
+void io::SerialPort::receiveData()
 {
-
+    const QByteArray data = mp_serialPort->readAll();
+    mp_console->writeData(data);
 }
 
 

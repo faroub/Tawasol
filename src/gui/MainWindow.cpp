@@ -8,6 +8,7 @@
 
 #include "MainWindow.h"
 #include "Setting.h"
+#include "Console.h"
 #include "SerialPort.h"
 
 
@@ -17,7 +18,8 @@
 
 gui::MainWindow::MainWindow(QWidget *ap_applicationGUI)
                 : mp_setting(new Setting(this)),
-                  mp_serialPort(new io::SerialPort(this,mp_setting)),
+                  mp_console(new Console(this)),
+                  mp_serialPort(new io::SerialPort(this,mp_setting, mp_console)),
                   mp_statusMessage(new QLabel("Disconnected ...",this))
 
 {
@@ -30,6 +32,9 @@ gui::MainWindow::MainWindow(QWidget *ap_applicationGUI)
     setupToolBar();
     statusBar()->addWidget(mp_statusMessage);
 
+    enableDisconnectionAction(false);
+    enableConnectionAction(true);
+
 
 
     // set a dummy wideget if none is defined
@@ -41,8 +46,11 @@ gui::MainWindow::MainWindow(QWidget *ap_applicationGUI)
         ap_applicationGUI->setMinimumSize(400, 400);
     }
 
+    //mp_console->setEnabled(false);
+
+
     setWindowTitle("I/O Application GUI");
-    setCentralWidget(ap_applicationGUI);
+    setCentralWidget(mp_console);
 
 
 
@@ -53,7 +61,7 @@ gui::MainWindow::~MainWindow()
 
 }
 
-void gui::MainWindow::enableConnectionAction(const bool a_enable)
+void gui::MainWindow::enableConnectionAction(bool a_enable)
 {
     if (a_enable)
     {
@@ -64,7 +72,7 @@ void gui::MainWindow::enableConnectionAction(const bool a_enable)
     }
 }
 
-void gui::MainWindow::enableSetSettingAction(const bool a_enable)
+void gui::MainWindow::enableSetSettingAction(bool a_enable)
 {
     if (a_enable)
     {
@@ -75,7 +83,7 @@ void gui::MainWindow::enableSetSettingAction(const bool a_enable)
     }
 }
 
-void gui::MainWindow::enableDisconnectionAction(const bool a_enable)
+void gui::MainWindow::enableDisconnectionAction(bool a_enable)
 {
     if (a_enable)
     {
@@ -94,7 +102,7 @@ void gui::MainWindow::showStatusMessage(const QString &a_message)
 void gui::MainWindow::about()
 {
     QMessageBox::about(this, tr("About"),tr("This Simple Qt Application allows you to communicate\n"
-                                            " with an avr chip using the serial port."
+                                            " with a device connected to the serial port."
                                             "\n"
                                             "\n"
                                             "Farid Oubbati\n"

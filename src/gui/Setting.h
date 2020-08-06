@@ -25,6 +25,7 @@ class Setting : public QDialog
 {
     Q_OBJECT
 
+
 private slots:
     void showPortInfo(int idx);
     void update();

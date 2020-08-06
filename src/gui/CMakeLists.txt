@@ -1,1 +1,1 @@
-add_library(gui MainWindow.cpp Setting.cpp)
+add_library(gui MainWindow.cpp Setting.cpp Console.cpp)

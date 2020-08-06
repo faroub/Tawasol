@@ -17,6 +17,7 @@ namespace gui
 {
 class MainWindow;
 class Setting;
+class Console;
 }
 namespace io
 {
@@ -29,23 +30,27 @@ public slots:
 
     void openSerialPort();
 
-    void closeSerialPort();
+    void closeSerialPort();   
 
     void enableLocalEcho(const bool a_enable);
 
 private slots:
 
+    void sendData(const QByteArray &data);
+
+    void receiveData();
+
+    void setSerialPortParameters();
+
     void handleError(QSerialPort::SerialPortError l_error);
 
 public:
-    SerialPort(gui::MainWindow *ap_mainWindow, gui::Setting *ap_setting);
+    SerialPort(gui::MainWindow *ap_mainWindow, gui::Setting *ap_setting, gui::Console *ap_console);
 
     ~SerialPort();
 
 
-    void sendFrame(const QByteArray &data);
 
-    void readFrame();
 
 
 
@@ -61,6 +66,8 @@ private:
     gui::MainWindow *mp_mainWindow = nullptr;
 
     gui::Setting *mp_setting = nullptr;
+
+    gui::Console *mp_console = nullptr;
 
 
 };

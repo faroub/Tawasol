@@ -17,6 +17,7 @@ QT_END_NAMESPACE
 namespace gui
 {
 class Setting;
+class Console;
 }
 namespace io
 {
@@ -42,11 +43,11 @@ public:
         */
     ~MainWindow();
 
-    void enableConnectionAction(const bool a_enable);
+    void enableConnectionAction(bool a_enable);
 
-    void enableDisconnectionAction(const bool a_enable);
+    void enableDisconnectionAction(bool a_enable);
 
-    void enableSetSettingAction(const bool a_enable);
+    void enableSetSettingAction(bool a_enable);
 
     void showStatusMessage(const QString &a_message);
 
@@ -68,6 +69,8 @@ private:
 
 
     Setting *mp_setting = nullptr;
+
+    Console *mp_console = nullptr;
 
     io::SerialPort *mp_serialPort = nullptr;
 
