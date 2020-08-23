@@ -32,15 +32,12 @@ public slots:
 
     void closeSerialPort();   
 
-    void enableLocalEcho(const bool a_enable);
 
 private slots:
 
     void sendData(const QByteArray &data);
 
-    void receiveData();
-
-    void setSerialPortParameters();
+    void receiveData();  
 
     void handleError(QSerialPort::SerialPortError l_error);
 
@@ -61,7 +58,11 @@ public:
 
 
 protected:
+
+
 private:
+
+    void setSerialPortParameters();
 
     QSerialPort *mp_serialPort = nullptr;
 
