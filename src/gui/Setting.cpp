@@ -6,6 +6,8 @@
 #include <QComboBox>
 #include <QLabel>
 #include <QPushButton>
+#include <QLineEdit>
+#include <QIntValidator>
 #include <QtSerialPort/QSerialPort>
 #include <QtSerialPort/QSerialPortInfo>
 
@@ -61,6 +63,8 @@ gui::Setting::Setting(QWidget *ap_parent) :
 
     mp_baudRateComboBox = new QComboBox();
 
+    mp_baudRateValidator = new QIntValidator(0, 4000000, mp_baudRateComboBox);
+
     QLabel *lp_baudRateLabel = new QLabel("Baud rate");
 
     mp_frameSizeComboBox = new QComboBox();
@@ -103,19 +107,31 @@ gui::Setting::Setting(QWidget *ap_parent) :
     lp_settingGridLayout->addWidget(lp_selectPortParametersGroupBox,0,3,1,3);
     lp_settingGridLayout->addLayout(lp_hLayout,1,4,1,2);
 
+    mp_baudRateComboBox->setInsertPolicy(QComboBox::NoInsert);
+
+
     connect(mp_okButton, SIGNAL(clicked()), this, SLOT(update()));  
     connect(mp_cancelButton, SIGNAL(clicked()), this, SLOT(close()));
     connect(mp_refreshButton, SIGNAL(clicked()), this, SLOT(refresh()));
     connect(mp_portComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged),
             this, &Setting::showPortInfo);
+    connect(mp_baudRateComboBox,  QOverload<int>::of(&QComboBox::currentIndexChanged),
+            this, &Setting::checkCustomBaudRate);
+    connect(mp_portComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged),
+            this, &Setting::checkCustomPortPath);
+
 
     fillPortParameters();
     updatePortsInfo();
     updatePortParameters();
 
+
     setModal(true);
 
     setLayout(lp_settingGridLayout);
+
+    setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    setFixedSize(sizeHint().width(),sizeHint().height());
 
     setWindowTitle("Port Settings");
 
@@ -180,6 +196,25 @@ void gui::Setting::updatePortParameters()
     mp_portParameters->m_flowControl = static_cast<QSerialPort::FlowControl>(
                 mp_flowControlComboBox->itemData(mp_flowControlComboBox->currentIndex()).toInt());
     mp_portParameters->m_flowControlString = mp_flowControlComboBox->currentText();
+
+}
+
+void gui::Setting::checkCustomPortPath(int a_idx)
+{
+    if (!mp_portComboBox->itemData(a_idx).isValid())
+    {
+        mp_portComboBox->setEditable(true);
+        mp_portComboBox->clearEditText();
+    }
+}
+
+void gui::Setting::checkCustomBaudRate(int a_idx)
+{
+    if (!mp_baudRateComboBox->itemData(a_idx).isValid()) {
+        mp_baudRateComboBox->setEditable(true);
+        mp_baudRateComboBox->clearEditText();
+        mp_baudRateComboBox->lineEdit()->setValidator(mp_baudRateValidator);
+    }
 
 }
 

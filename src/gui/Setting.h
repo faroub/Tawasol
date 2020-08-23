@@ -16,6 +16,7 @@ class QGroupBox;
 class QComboBox;
 class QGridLayout;
 class QLabel;
+class QIntValidator;
 QT_END_NAMESPACE
 
 namespace gui
@@ -25,12 +26,18 @@ class Setting : public QDialog
 {
     Q_OBJECT
 
+public slots:
+
+    int exec() override;
 
 private slots:
+
     void showPortInfo(int idx);
+    void checkCustomBaudRate(int idx);
+    void checkCustomPortPath(int idx);
     void update();
     void refresh();
-    int exec() override;
+
 
 public:
 
@@ -101,6 +108,8 @@ private:
     QPushButton *mp_cancelButton = nullptr;
 
     QPushButton *mp_refreshButton = nullptr;
+
+    QIntValidator *mp_baudRateValidator = nullptr;
 
 
 

@@ -10,6 +10,7 @@ gui::Console::Console(QWidget *ap_parent)
     p.setColor(QPalette::Base, Qt::black);
     p.setColor(QPalette::Text, Qt::white);
     setPalette(p);
+    setEnabled(false);
 
 }
 
@@ -40,6 +41,10 @@ void gui::Console::keyPressEvent(QKeyEvent *e)
             break;
         default:
         {
+        if (m_localEchoEnabled)
+            {
+                QPlainTextEdit::keyPressEvent(e);
+            }
             emit sendData(e->text().toLocal8Bit());
             break;
         }
@@ -66,3 +71,7 @@ void gui::Console::contextMenuEvent(QContextMenuEvent *e)
 
 }
 
+void gui::Console::enableLocalEcho(const bool a_enable)
+{
+    m_localEchoEnabled = a_enable;
+}

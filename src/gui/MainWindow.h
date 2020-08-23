@@ -89,6 +89,8 @@ private:
     QAction *mp_setSettingAction = nullptr;
 
     QAction *mp_setLocalEcho = nullptr;
+    
+    QAction *mp_clearConsoleAction = nullptr;
 
 
 

@@ -34,7 +34,7 @@ gui::MainWindow::MainWindow(QWidget *ap_applicationGUI)
 
     enableDisconnectionAction(false);
     enableConnectionAction(true);
-    mp_console->setEnabled(false);
+
 
 
 
@@ -51,6 +51,7 @@ gui::MainWindow::MainWindow(QWidget *ap_applicationGUI)
 
 
     setWindowTitle("TAWASOL");
+    setMinimumSize(500, 500);
     setCentralWidget(mp_console);
 
 
@@ -147,7 +148,10 @@ void gui::MainWindow::setupActions()
     connect(mp_setSettingAction, SIGNAL(triggered()), mp_setting, SLOT(exec()));
     mp_setLocalEcho = new QAction(tr("Local &echo"), this);
     mp_setLocalEcho->setCheckable(true);
-    connect(mp_setLocalEcho, SIGNAL(toggled(bool)), mp_serialPort, SLOT(enableLocalEcho(const bool)));
+    connect(mp_setLocalEcho, SIGNAL(toggled(bool)), mp_console, SLOT(enableLocalEcho(const bool)));    
+    mp_clearConsoleAction = new QAction(QIcon(":/clear.png"),tr("C&lear"), this);
+    connect(mp_clearConsoleAction, SIGNAL(triggered()), mp_console, SLOT(clear()));
+
 
 
 }
@@ -162,6 +166,7 @@ void gui::MainWindow::setupToolBar()
     lp_fileToolBar->addAction(mp_connectAction);
     lp_fileToolBar->addAction(mp_disconnectAction);
     lp_fileToolBar->addAction(mp_setSettingAction);
+    lp_fileToolBar->addAction(mp_clearConsoleAction);
     addToolBar(lp_fileToolBar);
 }
 

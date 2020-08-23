@@ -21,6 +21,11 @@ signals:
 
     void sendData(const QByteArray &data);
 
+public slots:
+
+    void enableLocalEcho(const bool a_enable);
+
+
 public:
 
     Console(QWidget *ap_parent = nullptr);
@@ -29,12 +34,15 @@ public:
 
     void writeData(const QByteArray &data);
 
+
+
 protected:
     void keyPressEvent(QKeyEvent *e) override;
     void mousePressEvent(QMouseEvent *e) override;
     void mouseDoubleClickEvent(QMouseEvent *e) override;
     void contextMenuEvent(QContextMenuEvent *e) override;
 private:
+    bool m_localEchoEnabled = false;
 };
 
 
