@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8)
 
 
 
-set (INTERN_LINK_LIBS ${INTERN_LINK_LIBS} gui io processing)
+set (INTERN_LINK_LIBS ${INTERN_LINK_LIBS} gui io utils)
 set (EXTERN_LINK_LIBS ${EXTERN_LINK_LIBS} Qt5::Widgets Qt5::SerialPort)
 
 # target

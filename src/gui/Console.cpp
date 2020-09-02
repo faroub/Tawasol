@@ -11,6 +11,8 @@ gui::Console::Console(QWidget *ap_parent)
     p.setColor(QPalette::Text, Qt::white);
     setPalette(p);
     setEnabled(false);
+    setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+
 
 }
 

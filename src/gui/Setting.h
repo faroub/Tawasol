@@ -8,6 +8,7 @@
 */
 #ifndef SETTING_H
 #define SETTING_H
+#include "tawasol_utils.h"
 #include <QDialog>
 #include <QtSerialPort/QSerialPort>
 

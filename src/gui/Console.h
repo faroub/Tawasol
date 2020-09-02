@@ -8,6 +8,7 @@
 */
 #ifndef CONSOLE_H
 #define CONSOLE_H
+#include "tawasol_utils.h"
 #include <QPlainTextEdit>
 
 namespace gui

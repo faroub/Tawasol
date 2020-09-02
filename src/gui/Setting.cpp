@@ -1,6 +1,7 @@
 #include <QDebug>
 #include "Setting.h"
 #include "SerialPort.h"
+#include "Log.h"
 #include <QGridLayout>
 #include <QGroupBox>
 #include <QComboBox>
@@ -10,6 +11,7 @@
 #include <QIntValidator>
 #include <QtSerialPort/QSerialPort>
 #include <QtSerialPort/QSerialPortInfo>
+
 
 
 
@@ -115,7 +117,7 @@ gui::Setting::Setting(QWidget *ap_parent) :
     connect(mp_refreshButton, SIGNAL(clicked()), this, SLOT(refresh()));
     connect(mp_portComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged),
             this, &Setting::showPortInfo);
-    connect(mp_baudRateComboBox,  QOverload<int>::of(&QComboBox::currentIndexChanged),
+    connect(mp_baudRateComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged),
             this, &Setting::checkCustomBaudRate);
     connect(mp_portComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged),
             this, &Setting::checkCustomPortPath);
@@ -151,12 +153,14 @@ int gui::Setting::exec()
 }
 void gui::Setting::refresh()
 {
+    INFO("Refresh Port Information");
     updatePortsInfo();
 
 }
 
 void gui::Setting::update()
 {
+    INFO("Update Port Parameters");
     updatePortParameters();
     close();
 
@@ -201,6 +205,8 @@ void gui::Setting::updatePortParameters()
 
 void gui::Setting::checkCustomPortPath(int a_idx)
 {
+    mp_portComboBox->setEditable(false);
+
     if (!mp_portComboBox->itemData(a_idx).isValid())
     {
         mp_portComboBox->setEditable(true);
@@ -210,7 +216,10 @@ void gui::Setting::checkCustomPortPath(int a_idx)
 
 void gui::Setting::checkCustomBaudRate(int a_idx)
 {
-    if (!mp_baudRateComboBox->itemData(a_idx).isValid()) {
+    mp_baudRateComboBox->setEditable(false);
+
+    if (!mp_baudRateComboBox->itemData(a_idx).isValid())
+    {
         mp_baudRateComboBox->setEditable(true);
         mp_baudRateComboBox->clearEditText();
         mp_baudRateComboBox->lineEdit()->setValidator(mp_baudRateValidator);
@@ -249,12 +258,12 @@ void gui::Setting::updatePortsInfo()
              << (l_portInfoList.systemLocation().isEmpty() ? tr("N/A") : l_portInfoList.systemLocation())
              << (l_portInfoList.vendorIdentifier() ? QString::number(l_portInfoList.vendorIdentifier(), 16) : tr("N/A") )
              << (l_portInfoList.productIdentifier() ? QString::number(l_portInfoList.productIdentifier(), 16) : tr("N/A"));
-
              mp_portComboBox->addItem(list.first(), list);
-
     }
 
     mp_portComboBox->addItem(tr("Custom"));
+
+    INFO("Update Port Information");
 
 
 

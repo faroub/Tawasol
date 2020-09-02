@@ -1,11 +1,10 @@
-#include <QDebug>
 #include <QLabel>
 #include <QMenuBar>
 #include <QToolBar>
 #include <QStatusBar>
 #include <QMessageBox>
 #include <QIcon>
-
+#include "Log.h"
 #include "MainWindow.h"
 #include "Setting.h"
 #include "Console.h"
@@ -16,7 +15,7 @@
 
 
 
-gui::MainWindow::MainWindow(QWidget *ap_applicationGUI)
+gui::MainWindow::MainWindow()
                 : mp_setting(new Setting(this)),
                   mp_console(new Console(this)),
                   mp_serialPort(new io::SerialPort(this,mp_setting, mp_console)),
@@ -25,7 +24,7 @@ gui::MainWindow::MainWindow(QWidget *ap_applicationGUI)
 {
 
 
-
+    INFO(QString("Start Application"));
 
     setupActions();
     setupMenuBar();
@@ -36,40 +35,27 @@ gui::MainWindow::MainWindow(QWidget *ap_applicationGUI)
     enableConnectionAction(true);
 
 
-
-
-    // set a dummy wideget if none is defined
-    if (ap_applicationGUI == nullptr)
-    {
-        ap_applicationGUI = new QWidget();
-        QLabel *lp_noApplicationText = new QLabel(ap_applicationGUI);
-        lp_noApplicationText->setText("No Application ...");
-        ap_applicationGUI->setMinimumSize(400, 400);
-    }
-
-
-
-
     setWindowTitle("TAWASOL");
     setMinimumSize(500, 500);
     setCentralWidget(mp_console);
-
 
 
 }
 
 gui::MainWindow::~MainWindow()
 {
-
+    INFO("Close Application");
 }
 
 void gui::MainWindow::enableConnectionAction(bool a_enable)
 {
     if (a_enable)
     {
+        INFO("Enable Connection Action");
         mp_connectAction->setEnabled(true);
 
     } else {
+        INFO("Disable Connection Action");
         mp_connectAction->setEnabled(false);
     }
 }
@@ -78,9 +64,11 @@ void gui::MainWindow::enableSetSettingAction(bool a_enable)
 {
     if (a_enable)
     {
+        INFO("Enable Setting Action");
         mp_setSettingAction->setEnabled(true);
 
     } else {
+        INFO("Disable Setting Action");
         mp_setSettingAction->setEnabled(false);
     }
 }
@@ -89,15 +77,20 @@ void gui::MainWindow::enableDisconnectionAction(bool a_enable)
 {
     if (a_enable)
     {
+        INFO("Enable Disconnection Action");
         mp_disconnectAction->setEnabled(true);
 
     } else {
+        INFO("Disable Disconnection Action");
         mp_disconnectAction->setEnabled(false);
     }
 }
 
 void gui::MainWindow::showStatusMessage(const QString &a_message)
 {
+    INFO(QString("Show Status Message: %1").arg(a_message));
+
+
     mp_statusMessage->setText(a_message);
 
 }

@@ -10,6 +10,7 @@
 #define MAINWINDOW_H
 #include <QMainWindow>
 
+
 QT_BEGIN_NAMESPACE
 class QLabel;
 QT_END_NAMESPACE
@@ -38,7 +39,7 @@ public:
          *
          *  @param ap_applicationGUI defines pointer to application GUI
          */
-    MainWindow(QWidget *ap_applicationGUI = nullptr);
+    MainWindow();
     /** Destructor.
         */
     ~MainWindow();
