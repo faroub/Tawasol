@@ -1,9 +1,14 @@
 <RCC>
     <qresource prefix="/">
-        <file>application-exit.png</file>
         <file>connect.png</file>
         <file>disconnect.png</file>
         <file>settings.png</file>
         <file>clear.png</file>
+        <file>tawasol_logo.png</file>
+        <file>copy.png</file>
+        <file>paste.png</file>
+        <file>exit.png</file>
+        <file>select_all.png</file>
+        <file>log_file.png</file>
     </qresource>
 </RCC>
