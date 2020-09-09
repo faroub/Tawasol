@@ -27,9 +27,10 @@ class Setting : public QDialog
 {
     Q_OBJECT
 
-public slots:
 
-    int exec() override;
+
+public slots:
+    void open();
 
 private slots:
 
@@ -38,6 +39,8 @@ private slots:
     void checkCustomPortPath(int idx);
     void update();
     void refresh();
+    void close();
+
 
 
 public:
@@ -60,7 +63,7 @@ public:
 
     Setting(QWidget *ap_parent = nullptr);
 
-    ~Setting() override;
+    ~Setting();
 
 
     portParameters* getPortParameters();

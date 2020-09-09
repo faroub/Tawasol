@@ -18,7 +18,7 @@ gui::Console::Console(QWidget *ap_parent)
 
 gui::Console::~Console()
 {
-
+    qDebug("Distructor console widget");
 }
 
 
@@ -43,7 +43,7 @@ void gui::Console::keyPressEvent(QKeyEvent *e)
             break;
         default:
         {
-        if (m_localEchoEnabled)
+            if (m_localEchoEnabled)
             {
                 QPlainTextEdit::keyPressEvent(e);
             }
@@ -75,5 +75,35 @@ void gui::Console::contextMenuEvent(QContextMenuEvent *e)
 
 void gui::Console::enableLocalEcho(const bool a_enable)
 {
+    qInfo("Set local echo: %d", a_enable);
     m_localEchoEnabled = a_enable;
 }
+
+void gui::Console::clear()
+{
+    qInfo("Clear console");
+    QPlainTextEdit::clear();
+
+}
+
+void gui::Console::copy()
+{
+    qInfo("Copy text");
+    QPlainTextEdit::copy();
+
+}
+
+void gui::Console::selectAll()
+{
+    qInfo("Select all text");
+    QPlainTextEdit::selectAll();
+
+}
+
+void gui::Console::past()
+{
+    qInfo("Paste text");
+    QPlainTextEdit::paste();
+
+}
+

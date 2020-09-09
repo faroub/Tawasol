@@ -25,6 +25,10 @@ signals:
 public slots:
 
     void enableLocalEcho(const bool a_enable);
+    void clear();
+    void copy();
+    void selectAll();
+    void past();
 
 
 public:
@@ -33,7 +37,7 @@ public:
 
     ~Console() override;
 
-    void writeData(const QByteArray &data);
+    void writeData(const QByteArray &ar_data);
 
 
 

@@ -35,7 +35,7 @@ public slots:
 
 private slots:
 
-    void sendData(const QByteArray &data);
+    void sendData(const QByteArray &ar_data);
 
     void receiveData();  
 

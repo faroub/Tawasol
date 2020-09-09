@@ -142,25 +142,24 @@ gui::Setting::Setting(QWidget *ap_parent) :
 
 gui::Setting::~Setting()
 {
-
+    qDebug("Distructor setting widget");
 
 }
 
-int gui::Setting::exec()
+void gui::Setting::open()
 {
+    qInfo("Open setting widget");
     updatePortsInfo();
-    return QDialog::exec();
+    QDialog::open();
 }
 void gui::Setting::refresh()
 {
-    INFO("Refresh Port Information");
     updatePortsInfo();
 
 }
 
 void gui::Setting::update()
 {
-    INFO("Update Port Parameters");
     updatePortParameters();
     close();
 
@@ -173,8 +172,6 @@ void gui::Setting::updatePortParameters()
     mp_portParameters->m_operationMode = static_cast<QSerialPort::OpenModeFlag>(
                 mp_operationModeComboBox->itemData(mp_operationModeComboBox->currentIndex()).toInt());
     mp_portParameters->m_operationModeString = mp_operationModeComboBox->currentText();
-
-
 
     if (mp_baudRateComboBox->currentIndex() == 8) {
         mp_portParameters->m_baudRate = mp_baudRateComboBox->currentText().toInt();
@@ -200,6 +197,15 @@ void gui::Setting::updatePortParameters()
     mp_portParameters->m_flowControl = static_cast<QSerialPort::FlowControl>(
                 mp_flowControlComboBox->itemData(mp_flowControlComboBox->currentIndex()).toInt());
     mp_portParameters->m_flowControlString = mp_flowControlComboBox->currentText();
+
+
+    qInfo("Update port %s: %s, %s, %s, %s, %s",
+          qUtf8Printable(mp_portParameters->m_name),
+          qUtf8Printable(mp_portParameters->m_baudRateString),
+          qUtf8Printable(mp_portParameters->m_frameSizeString),
+          qUtf8Printable(mp_portParameters->m_parityModeString),
+          qUtf8Printable(mp_portParameters->m_stopBitsString),
+          qUtf8Printable(mp_portParameters->m_flowControlString));
 
 }
 
@@ -246,24 +252,33 @@ void gui::Setting::showPortInfo(int a_idx)
 }
 void gui::Setting::updatePortsInfo()
 {
+    qInfo("Update ports information:");
     mp_portComboBox->clear();
     QList<QSerialPortInfo> l_portsInfoLists = QSerialPortInfo::availablePorts();
     for (const QSerialPortInfo &l_portInfoList : l_portsInfoLists)
     {
-        QStringList list;
-        list << l_portInfoList.portName()
-             << (l_portInfoList.description().isEmpty() ? tr("N/A") : l_portInfoList.description())
-             << (l_portInfoList.manufacturer().isEmpty() ? tr("N/A") : l_portInfoList.manufacturer())
-             << (l_portInfoList.serialNumber().isEmpty() ? tr("N/A") : l_portInfoList.serialNumber())
-             << (l_portInfoList.systemLocation().isEmpty() ? tr("N/A") : l_portInfoList.systemLocation())
-             << (l_portInfoList.vendorIdentifier() ? QString::number(l_portInfoList.vendorIdentifier(), 16) : tr("N/A") )
-             << (l_portInfoList.productIdentifier() ? QString::number(l_portInfoList.productIdentifier(), 16) : tr("N/A"));
-             mp_portComboBox->addItem(list.first(), list);
+        QStringList l_portList;
+        l_portList  << l_portInfoList.portName()
+                    << (l_portInfoList.description().isEmpty() ? tr("N/A") : l_portInfoList.description())
+                    << (l_portInfoList.manufacturer().isEmpty() ? tr("N/A") : l_portInfoList.manufacturer())
+                    << (l_portInfoList.serialNumber().isEmpty() ? tr("N/A") : l_portInfoList.serialNumber())
+                    << (l_portInfoList.systemLocation().isEmpty() ? tr("N/A") : l_portInfoList.systemLocation())
+                    << (l_portInfoList.vendorIdentifier() ? QString::number(l_portInfoList.vendorIdentifier(), 16) : tr("N/A") )
+                    << (l_portInfoList.productIdentifier() ? QString::number(l_portInfoList.productIdentifier(), 16) : tr("N/A"));
+             mp_portComboBox->addItem(l_portList.first(), l_portList);
+             qInfo("-> Port %s: %s, %s, %s, %s, %s, %s ",
+                   qUtf8Printable(l_portList.at(0)),
+                   qUtf8Printable(l_portList.at(1)),
+                   qUtf8Printable(l_portList.at(2)),
+                   qUtf8Printable(l_portList.at(3)),
+                   qUtf8Printable(l_portList.at(4)),
+                   qUtf8Printable(l_portList.at(5)),
+                   qUtf8Printable(l_portList.at(6)));
+
     }
 
     mp_portComboBox->addItem(tr("Custom"));
 
-    INFO("Update Port Information");
 
 
 
@@ -319,4 +334,11 @@ void gui::Setting::fillPortParameters()
 gui::Setting::portParameters *gui::Setting::getPortParameters()
 {
     return mp_portParameters;
+}
+
+void gui::Setting::close()
+{
+    qInfo("Close setting widget");
+    QDialog::close();
+
 }

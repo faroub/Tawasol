@@ -9,7 +9,6 @@ QFile utils::Log::m_logFile;
 void utils::Log::init(const QString &ar_folderName)
 {
 
-
 #ifdef LOG_TO_FILE
 
     // set logs folder name
@@ -64,7 +63,7 @@ void utils::Log::logMessageHandler(QtMsgType a_type, const QMessageLogContext &a
     case QtFatalMsg:
         l_text += QString("[%1] [fatal] [%2] %3:%4 - ").arg(l_appName).arg(l_pid).arg(l_function).arg(ar_context.line);
         l_text += ar_message;
-        break;
+        abort();
     }
 
     deleteOldLogFile(m_logFolderName);

@@ -19,6 +19,7 @@ namespace gui
 {
 class Setting;
 class Console;
+class LogFile;
 }
 namespace io
 {
@@ -33,6 +34,8 @@ class MainWindow : public QMainWindow
 
 private slots:
     void about();
+    void close();
+
 
 public:
     /** Constructor. Builds the MainWindow GUI
@@ -50,9 +53,9 @@ public:
 
     void enableSetSettingAction(bool a_enable);
 
-    void showStatusMessage(const QString &a_message);
+    void showStatusMessage(const QString &ar_message);
 
-    void showErrorMessage(const QString &a_message, const QString &a_error);
+    void showErrorMessage(const QString &ar_message, const QString &a_error);
 
 
 
@@ -79,6 +82,8 @@ private:
 
     Console *mp_console = nullptr;
 
+    LogFile *mp_logFile = nullptr;
+
     io::SerialPort *mp_serialPort = nullptr;
 
     QLabel *mp_statusMessage = nullptr;
@@ -89,9 +94,23 @@ private:
 
     QAction *mp_setSettingAction = nullptr;
 
-    QAction *mp_setLocalEcho = nullptr;
+    QAction *mp_setLocalEchoAction = nullptr;
     
-    QAction *mp_clearConsoleAction = nullptr;
+    QAction *mp_clearAction = nullptr;
+
+#ifndef QT_NO_CLIPBOARD
+
+    QAction *mp_copyAction = nullptr;
+
+    QAction *mp_pastAction = nullptr;
+#endif
+
+    QAction *mp_selectAllAction = nullptr;
+
+    QAction *mp_exitAction = nullptr;
+
+    QAction *mp_logFileAction = nullptr;
+
 
 
 
