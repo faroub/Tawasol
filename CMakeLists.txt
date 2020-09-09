@@ -13,13 +13,23 @@ if(CMAKE_VERSION VERSION_LESS "3.7.0")
 endif()
 
 
-if(NOT CMAKE_BUILD_TYPE STREQUAL "Debug")
-    add_definitions(-DQT_NO_DEBUG)
+
+
+if(CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
+
+    add_definitions(-DQT_NO_DEBUG_OUTPUT)
+
+elseif(CMAKE_BUILD_TYPE STREQUAL "MinSizeRel")
+
+
+    add_definitions(-DQT_NO_DEBUG_OUTPUT)
+
+elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
+
+    add_definitions(-DQT_NO_DEBUG_OUTPUT)
+
 endif()
 
-#  QT_MESSAGELOGCONTEXT
-
-set(ENV{QT_MESSAGE_PATTERN} "[%{time yyyyMMdd h:mm:ss.zzz t} %{if-debug}D%{endif}%{if-info}I%{endif}%{if-warning}W%{endif}%{if-critical}C%{endif}%{if-fatal}F%{endif}] %{file}:%{line} - %{message}")
 
 find_package(Qt5 COMPONENTS Widgets SerialPort REQUIRED)
 
