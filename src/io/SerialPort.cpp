@@ -72,8 +72,9 @@ void io::SerialPort::openSerialPort()
                                          .arg(mp_setting->getPortParameters()->m_name).arg(mp_setting->getPortParameters()->m_baudRateString).arg(mp_setting->getPortParameters()->m_frameSizeString)
                                          .arg(mp_setting->getPortParameters()->m_parityModeString).arg(mp_setting->getPortParameters()->m_stopBitsString).arg(mp_setting->getPortParameters()->m_flowControlString));
 
-        qInfo("Connected to %s: %s, %s, %s, %s, %s",
+        qInfo("Connected to %s: %s, %s, %s, %s, %s, %s",
               qUtf8Printable(mp_setting->getPortParameters()->m_name),
+              qUtf8Printable(mp_setting->getPortParameters()->m_operationModeString),
               qUtf8Printable(mp_setting->getPortParameters()->m_baudRateString),
               qUtf8Printable(mp_setting->getPortParameters()->m_frameSizeString),
               qUtf8Printable(mp_setting->getPortParameters()->m_parityModeString),
