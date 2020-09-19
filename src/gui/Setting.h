@@ -107,12 +107,6 @@ private:
 
     QLabel *mp_productIDLabel = nullptr;
 
-    QPushButton *mp_okButton = nullptr;
-
-    QPushButton *mp_cancelButton = nullptr;
-
-    QPushButton *mp_refreshButton = nullptr;
-
     QIntValidator *mp_baudRateValidator = nullptr;
 
 

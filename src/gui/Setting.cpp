@@ -25,15 +25,15 @@ gui::Setting::Setting(QWidget *ap_parent) :
     QGridLayout *lp_settingGridLayout = new QGridLayout();
 
 
-    QGroupBox *lp_selectPortGroupBox = new QGroupBox("Select Port");
+    QGroupBox *lp_selectPortGroupBox = new QGroupBox(tr("Select Port"));
     QGridLayout *lp_selectPortGridLayout = new QGridLayout(lp_selectPortGroupBox);
 
-    QGroupBox *lp_selectPortParametersGroupBox = new QGroupBox("Select Port Parameters");
+    QGroupBox *lp_selectPortParametersGroupBox = new QGroupBox(tr("Select Port Parameters"));
     QGridLayout *lp_selectPortParametersGridLayout = new QGridLayout(lp_selectPortParametersGroupBox);
 
     mp_portComboBox = new QComboBox();
 
-    mp_refreshButton = new QPushButton("Refresh");
+    QPushButton *lp_refreshButton = new QPushButton(tr("Refresh"));
 
     mp_descriptionLabel = new QLabel();
 
@@ -49,7 +49,7 @@ gui::Setting::Setting(QWidget *ap_parent) :
 
 
     lp_selectPortGridLayout->addWidget(mp_portComboBox,0,0);
-    lp_selectPortGridLayout->addWidget(mp_refreshButton,0,1);
+    lp_selectPortGridLayout->addWidget(lp_refreshButton,0,1);
 
     lp_selectPortGridLayout->addWidget(mp_descriptionLabel,1,0);
     lp_selectPortGridLayout->addWidget(mp_manufacturerLabel,2,0);
@@ -61,29 +61,29 @@ gui::Setting::Setting(QWidget *ap_parent) :
 
     mp_operationModeComboBox = new QComboBox();
 
-    QLabel *lp_operationModeLabel = new QLabel("Mode");
+    QLabel *lp_operationModeLabel = new QLabel(tr("Mode"));
 
     mp_baudRateComboBox = new QComboBox();
 
     mp_baudRateValidator = new QIntValidator(0, 4000000, mp_baudRateComboBox);
 
-    QLabel *lp_baudRateLabel = new QLabel("Baud rate");
+    QLabel *lp_baudRateLabel = new QLabel(tr("Baud rate"));
 
     mp_frameSizeComboBox = new QComboBox();
 
-    QLabel *lp_frameSizeLabel = new QLabel("Frame size");
+    QLabel *lp_frameSizeLabel = new QLabel(tr("Frame size"));
 
     mp_parityModeComboBox = new QComboBox();
 
-    QLabel *lp_parityModeLabel = new QLabel("Parity mode");
+    QLabel *lp_parityModeLabel = new QLabel(tr("Parity mode"));
 
     mp_stopBitsComboBox = new QComboBox();
 
-    QLabel *lp_stopBitsLabel = new QLabel("Stop bits");
+    QLabel *lp_stopBitsLabel = new QLabel(tr("Stop bits"));
 
     mp_flowControlComboBox = new QComboBox();
 
-    QLabel *lp_flowControlLabel = new QLabel("Flow control");
+    QLabel *lp_flowControlLabel = new QLabel(tr("Flow control"));
 
     lp_selectPortParametersGridLayout->addWidget(lp_operationModeLabel,0,0);
     lp_selectPortParametersGridLayout->addWidget(mp_operationModeComboBox,0,1);
@@ -99,11 +99,11 @@ gui::Setting::Setting(QWidget *ap_parent) :
     lp_selectPortParametersGridLayout->addWidget(mp_flowControlComboBox,5,1);
 
     QHBoxLayout *lp_hLayout = new QHBoxLayout();
-    mp_okButton = new QPushButton("OK");
-    mp_cancelButton = new QPushButton("Cancel");
+    QPushButton *lp_okButton = new QPushButton(tr("OK"));
+    QPushButton *lp_cancelButton = new QPushButton(tr("Cancel"));
 
-    lp_hLayout->addWidget(mp_okButton);
-    lp_hLayout->addWidget(mp_cancelButton);
+    lp_hLayout->addWidget(lp_okButton);
+    lp_hLayout->addWidget(lp_cancelButton);
 
     lp_settingGridLayout->addWidget(lp_selectPortGroupBox,0,0,1,3);
     lp_settingGridLayout->addWidget(lp_selectPortParametersGroupBox,0,3,1,3);
@@ -112,9 +112,9 @@ gui::Setting::Setting(QWidget *ap_parent) :
     mp_baudRateComboBox->setInsertPolicy(QComboBox::NoInsert);
 
 
-    connect(mp_okButton, SIGNAL(clicked()), this, SLOT(update()));  
-    connect(mp_cancelButton, SIGNAL(clicked()), this, SLOT(close()));
-    connect(mp_refreshButton, SIGNAL(clicked()), this, SLOT(refresh()));
+    connect(lp_okButton, SIGNAL(clicked()), this, SLOT(update()));
+    connect(lp_cancelButton, SIGNAL(clicked()), this, SLOT(close()));
+    connect(lp_refreshButton, SIGNAL(clicked()), this, SLOT(refresh()));
     connect(mp_portComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged),
             this, &Setting::showPortInfo);
     connect(mp_baudRateComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged),
@@ -135,7 +135,7 @@ gui::Setting::Setting(QWidget *ap_parent) :
     setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     setFixedSize(sizeHint().width(),sizeHint().height());
 
-    setWindowTitle("Port Settings");
+    setWindowTitle(tr("Port Settings"));
 
 }
 
