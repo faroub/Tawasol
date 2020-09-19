@@ -20,6 +20,7 @@ namespace gui
 class Setting;
 class Console;
 class LogFile;
+class TextFormat;
 }
 namespace io
 {
@@ -28,6 +29,7 @@ class SerialPort;
 namespace gui
 {
 
+// TODO: void Window::contextMenu(const QPoint &pos)
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -84,6 +86,8 @@ private:
 
     LogFile *mp_logFile = nullptr;
 
+    TextFormat *mp_textFormat = nullptr;
+
     io::SerialPort *mp_serialPort = nullptr;
 
     QLabel *mp_statusMessage = nullptr;
@@ -110,6 +114,14 @@ private:
     QAction *mp_exitAction = nullptr;
 
     QAction *mp_logFileAction = nullptr;
+
+    QAction *mp_textFormatAction = nullptr;
+
+    QAction *mp_asciiAction = nullptr;
+
+    QAction *mp_hexAction = nullptr;
+
+
 
 
 

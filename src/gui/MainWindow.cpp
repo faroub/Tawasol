@@ -4,12 +4,13 @@
 #include <QStatusBar>
 #include <QMessageBox>
 #include <QIcon>
-#include "Log.h"
+#include <QtWidgets>
 #include "MainWindow.h"
 #include "Setting.h"
 #include "Console.h"
 #include "SerialPort.h"
 #include "LogFile.h"
+#include "TextFormat.h"
 
 
 
@@ -20,6 +21,7 @@ gui::MainWindow::MainWindow()
                 : mp_setting(new Setting(this)),
                   mp_console(new Console(this)),
                   mp_logFile(new LogFile(this)),
+                  mp_textFormat(new TextFormat(this)),
                   mp_serialPort(new io::SerialPort(this,mp_setting, mp_console)),
                   mp_statusMessage(new QLabel("Disconnected ...",this))
 
@@ -36,10 +38,12 @@ gui::MainWindow::MainWindow()
     enableDisconnectionAction(false);
     enableConnectionAction(true);
 
-
-    setWindowTitle("TAWASOL");
-    setMinimumSize(600, 700);
     setCentralWidget(mp_console);
+    setWindowTitle("TAWASOL");
+
+
+    const QRect screenGeometry = QApplication::desktop()->screenGeometry(this);
+    resize(screenGeometry.width() / 3, screenGeometry.height() / 2);
     qInfo("Start application");
 
 
@@ -133,6 +137,11 @@ void gui::MainWindow::setupMenuBar()
 
     QMenu *lp_menuView = menuBar()->addMenu(tr("&View"));
 
+    lp_menuView->addAction(mp_asciiAction);
+    lp_menuView->addAction(mp_hexAction);
+    lp_menuView->addAction(mp_textFormatAction);
+
+
     QMenu *lp_menuLog = menuBar()->addMenu(tr("&Log"));
 
     lp_menuLog->addAction(mp_logFileAction);
@@ -140,7 +149,7 @@ void gui::MainWindow::setupMenuBar()
 
 
     QMenu *lp_menuHelp = menuBar()->addMenu(tr("&Help"));
-    lp_menuHelp->addAction(tr("About"), this, &MainWindow::about);
+    lp_menuHelp->addAction(tr("&About"), this, &MainWindow::about);
 
 
 
@@ -182,7 +191,7 @@ void gui::MainWindow::setupActions()
     connect(mp_pastAction, SIGNAL(triggered()), mp_console, SLOT(past()));
     mp_pastAction->setShortcuts(QKeySequence::Paste);
 
-#endif
+#endif // !QT_NO_CLIPBOARD
 
     mp_exitAction = new QAction(QIcon(":/exit.png"),tr("&Exit"), this);
     connect(mp_exitAction, SIGNAL(triggered()), this, SLOT(close()));
@@ -195,9 +204,28 @@ void gui::MainWindow::setupActions()
     connect(mp_console, &QPlainTextEdit::copyAvailable, mp_pastAction, &QAction::setEnabled);
 #endif // !QT_NO_CLIPBOARD
 
-    mp_logFileAction = new QAction(QIcon(":/log_file.png"),tr("Log &File"), this);
+    mp_logFileAction = new QAction(QIcon(":/log_file.png"),tr("Log &Files"), this);
     connect(mp_logFileAction, SIGNAL(triggered()), mp_logFile, SLOT(open()));
     mp_logFileAction->setShortcut(Qt::CTRL + Qt::Key_F);
+
+    mp_textFormatAction = new QAction(QIcon(":/text_format.png"),tr("Text Fo&rmat"), this);
+    connect(mp_textFormatAction, SIGNAL(triggered()), mp_textFormat, SLOT(open()));
+    mp_textFormatAction->setShortcut(Qt::CTRL + Qt::Key_R);
+
+    QActionGroup *lp_actionGroup = new QActionGroup(this);
+
+    mp_asciiAction = new QAction(QIcon(":/ascii.png"),tr("&ASCII"), this);
+    connect(mp_asciiAction, SIGNAL(triggered()), mp_textFormat, SLOT(open()));
+    mp_asciiAction->setShortcut(Qt::CTRL + Qt::Key_A);
+    mp_asciiAction->setCheckable(true);
+    lp_actionGroup->addAction(mp_asciiAction);
+
+    mp_hexAction = new QAction(QIcon(":/hex.png"),tr("HE&X"), this);
+    connect(mp_hexAction, SIGNAL(triggered()), mp_textFormat, SLOT(open()));
+    mp_hexAction->setShortcut(Qt::CTRL + Qt::Key_X);
+    mp_hexAction->setCheckable(true);
+    lp_actionGroup->addAction(mp_hexAction);
+    mp_asciiAction->setChecked(true);
 }
 
 void gui::MainWindow::setupToolBar()
