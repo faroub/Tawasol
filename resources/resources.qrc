@@ -10,5 +10,8 @@
         <file>exit.png</file>
         <file>select_all.png</file>
         <file>log_file.png</file>
+        <file>text_format.png</file>
+        <file>ascii.png</file>
+        <file>hex.png</file>
     </qresource>
 </RCC>
