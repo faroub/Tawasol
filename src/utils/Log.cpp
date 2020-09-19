@@ -1,22 +1,22 @@
 #include "Log.h"
 
-QString utils::Log::m_logFolderName = "logs";
+QString utils::Log::m_logsFolderName = "logs";
 bool utils::Log::m_isLogFileOpen = false;
 QFile utils::Log::m_logFile;
+int utils::Log::m_logFileSize = 100; // kB
+int utils::Log::m_logFileNumber = 5;
 
 
-
-void utils::Log::init(const QString &ar_folderName)
+void utils::Log::init()
 {
 
 #ifdef LOG_TO_FILE
 
-    // set logs folder name
-    m_logFolderName = ar_folderName;
+
     // create folder if no one already exist
-    createLogFolder(m_logFolderName);
+    createLogsFolder(m_logsFolderName);
     // create a new log file
-    createNewLogFile(m_logFolderName);
+    createNewLogFile(m_logsFolderName);
     // open log file
     m_isLogFileOpen = openLogFile();
 
@@ -66,11 +66,11 @@ void utils::Log::logMessageHandler(QtMsgType a_type, const QMessageLogContext &a
         abort();
     }
 
-    deleteOldLogFile(m_logFolderName);
+    deleteOldLogFile(m_logsFolderName);
 
-    if (m_logFile.size() > LOGFILESIZE) //check current log size
+    if (m_logFile.size() > (m_logFileSize * 1024)) //check current log size
     {
-        createNewLogFile(m_logFolderName);
+        createNewLogFile(m_logsFolderName);
         m_isLogFileOpen = openLogFile();
         if (m_isLogFileOpen)
         {
@@ -97,46 +97,46 @@ void utils::Log::logMessageHandler(QtMsgType a_type, const QMessageLogContext &a
 
 }
 
-void utils::Log::createLogFolder(const QString &ar_folderName)
+void utils::Log::createLogsFolder(const QString &ar_logsFolderName)
 {
 
     // Create folder for logfiles if not exists
-    if(!QDir(ar_folderName).exists())
+    if(!QDir(ar_logsFolderName).exists())
     {
-      QDir().mkdir(ar_folderName);
+      QDir().mkdir(ar_logsFolderName);
     }
 }
 
-void utils::Log::createNewLogFile(const QString &ar_folderName)
+void utils::Log::createNewLogFile(const QString &ar_logsFolderName)
 {
     if (m_isLogFileOpen)
     {
         closeLogFile();
     }
-    m_logFile.setFileName(QString(ar_folderName + "/Log_%1__%2.txt")
+    m_logFile.setFileName(QString(ar_logsFolderName + "/Log_%1__%2.txt")
                           .arg(QDate::currentDate().toString("yyyy_MM_dd"))
                           .arg(QTime::currentTime().toString("hh_mm_ss_zzz")));
 
 }
 
 
-void utils::Log::deleteOldLogFile(const QString &ar_folderName)
+void utils::Log::deleteOldLogFile(const QString &ar_logsFolderName)
 {
     QDir l_dir;
     l_dir.setFilter(QDir::Files | QDir::Hidden | QDir::NoSymLinks);
     l_dir.setSorting(QDir::Time | QDir::Reversed);
-    l_dir.setPath(ar_folderName);
+    l_dir.setPath(ar_logsFolderName);
 
     QFileInfoList list = l_dir.entryInfoList();
 
-    if (list.size() <= LOGFILENUMBER)
+    if (list.size() <= m_logFileNumber)
     {
 
         return; //no files to delete
 
     } else {
 
-        for (int i = 0; i < (list.size() - LOGFILENUMBER); i++)
+        for (int i = 0; i < (list.size() - m_logFileNumber); i++)
         {
             QFile l_file(list.at(i).absoluteFilePath());
             l_file.remove();
@@ -159,4 +159,35 @@ void utils::Log::closeLogFile()
 bool utils::Log::writeLogMessage(const QString &ar_logMessage)
 {
     return m_logFile.write(qPrintable(ar_logMessage+"\n"));
+}
+
+void utils::Log::setLogFileNumber(const int &ar_logFileNumber)
+{
+    m_logFileNumber = ar_logFileNumber;
+}
+
+void utils::Log::setLogFileSize(const int &ar_logFileSize)
+{
+    m_logFileSize = ar_logFileSize;
+}
+
+int utils::Log::getLogFileSize()
+{
+    return m_logFileSize;
+}
+
+int utils::Log::getLogFileNumber()
+{
+    return m_logFileNumber;
+}
+
+void utils::Log::setLogsFolderName(const QString &ar_logsFolderName)
+{
+    m_logsFolderName = ar_logsFolderName;
+}
+
+
+QString utils::Log::getLogsFolderName()
+{
+    return m_logsFolderName;
 }

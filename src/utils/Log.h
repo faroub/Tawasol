@@ -7,9 +7,7 @@
 #include <QTime>
 #include <QDir>
 
-#define LOGFILESIZE 1024 * 100 //100kB
-#define LOGFILENUMBER 5
-//#define LOG_TO_FILE
+
 
 
 // use a gui to decide to log in file or not
@@ -23,32 +21,47 @@ class Log
 
 public:
 
-    static void init(const QString &ar_folderName = "logs");
+    static void init();
 
-    static void createLogFolder(const QString &ar_folderName);
+    static void createLogsFolder(const QString &ar_logsFolderName);
 
+    static void setLogFileSize(const int &ar_logFileSize);
+
+    static void setLogFileNumber(const int &ar_logFileNumber);
+
+    static int getLogFileSize();
+
+    static int getLogFileNumber();
+
+    static void setLogsFolderName(const QString &ar_logsFolderName);
+
+    static QString getLogsFolderName();
 
 protected:
 
 private:
 
-    static void createNewLogFile(const QString &ar_folderName);
+    static void createNewLogFile(const QString &ar_logsFolderName);
 
     static bool openLogFile();
 
     static void closeLogFile();
 
-    static void deleteOldLogFile(const QString &ar_folderName);
+    static void deleteOldLogFile(const QString &ar_logsFolderName);
 
     static void logMessageHandler(QtMsgType a_type, const QMessageLogContext &ar_context, const QString &ar_message);
 
     static bool writeLogMessage(const QString &ar_logMessage);
 
-    static QString m_logFolderName;
+    static QString m_logsFolderName;
 
     static bool m_isLogFileOpen;
 
     static QFile m_logFile;
+
+    static int m_logFileSize;
+
+    static int m_logFileNumber;
 
 };
 
