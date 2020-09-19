@@ -18,15 +18,17 @@ endif()
 if(CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
 
     add_definitions(-DQT_NO_DEBUG_OUTPUT)
+    add_definitions(-DLOG_TO_FILE)
 
 elseif(CMAKE_BUILD_TYPE STREQUAL "MinSizeRel")
 
-
     add_definitions(-DQT_NO_DEBUG_OUTPUT)
+    add_definitions(-DLOG_TO_FILE)
 
 elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
 
     add_definitions(-DQT_NO_DEBUG_OUTPUT)
+    add_definitions(-DLOG_TO_FILE)
 
 endif()
 
