@@ -68,7 +68,7 @@ void utils::Log::logMessageHandler(QtMsgType a_type, const QMessageLogContext &a
 
     deleteOldLogFile(m_logsFolderName);
 
-    if (m_logFile.size() > (m_logFileSize * 1024)) //check current log size
+    if (m_logFile.size() > (m_logFileSize * kBytesToBytes)) //check current log size
     {
         createNewLogFile(m_logsFolderName);
         m_isLogFileOpen = openLogFile();
@@ -77,8 +77,12 @@ void utils::Log::logMessageHandler(QtMsgType a_type, const QMessageLogContext &a
             // log message in log file
             writeLogMessage(l_text);
 
+
+
+
         } else {
             // log error message
+
         }
 
     } else {
@@ -88,9 +92,11 @@ void utils::Log::logMessageHandler(QtMsgType a_type, const QMessageLogContext &a
             // log message in log file
             writeLogMessage(l_text);
 
-        } else {
 
+        } else {
             // log error message
+
+
         }
 
     }
@@ -158,7 +164,7 @@ void utils::Log::closeLogFile()
 
 bool utils::Log::writeLogMessage(const QString &ar_logMessage)
 {
-    return m_logFile.write(qPrintable(ar_logMessage+"\n"));
+    return m_logFile.write(qUtf8Printable(ar_logMessage+"\n"));
 }
 
 void utils::Log::setLogFileNumber(const int &ar_logFileNumber)

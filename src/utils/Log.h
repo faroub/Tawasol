@@ -7,6 +7,7 @@
 #include <QTime>
 #include <QDir>
 
+#define kBytesToBytes 1024
 
 
 
