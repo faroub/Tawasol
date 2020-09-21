@@ -45,7 +45,7 @@ public:
 
 
 
-    SerialPort(gui::MainWindow *ap_mainWindow, gui::Setting *ap_setting, gui::Console *ap_console);
+    SerialPort(gui::MainWindow *ap_mainWindow = nullptr, gui::Setting *ap_setting = nullptr, gui::Console *ap_console = nullptr);
 
     ~SerialPort();
 
