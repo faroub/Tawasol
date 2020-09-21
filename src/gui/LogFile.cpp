@@ -75,9 +75,10 @@ gui::LogFile::LogFile(QWidget *ap_parent) :
     connect(lp_cancelButton, &QPushButton::clicked, this, &LogFile::close);
     connect(lp_okButton, &QPushButton::clicked, this, &LogFile::update);
 
-
-
     setLayout(lp_logFileGridLayout);
+
+    setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    setFixedSize(sizeHint().width(),sizeHint().height());
 
     setWindowTitle(tr("Log Files"));
 
@@ -107,7 +108,9 @@ void gui::LogFile::browse()
                                                     | QFileDialog::DontResolveSymlinks);
     if (!l_logsDirectory.isEmpty()) {
         if (mp_logsDirectoryComboBox->findText(l_logsDirectory) == -1)
+        {
             mp_logsDirectoryComboBox->addItem(l_logsDirectory);
+        }
         mp_logsDirectoryComboBox->setCurrentIndex(mp_logsDirectoryComboBox->findText(l_logsDirectory));
     }
 
