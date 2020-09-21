@@ -21,7 +21,7 @@ gui::MainWindow::MainWindow()
                 : mp_setting(new Setting(this)),
                   mp_console(new Console(this)),
                   mp_logFile(new LogFile(this)),
-                  mp_textFormat(new TextFormat(this)),
+                  mp_textFormat(new TextFormat(this,mp_console)),
                   mp_serialPort(new io::SerialPort(this,mp_setting, mp_console)),
                   mp_statusMessage(new QLabel("Disconnected ...",this))
 
