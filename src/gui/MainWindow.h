@@ -67,6 +67,10 @@ protected:
         */
     void closeEvent(QCloseEvent *event) override;
 
+#ifndef QT_NO_CONTEXTMENU
+    void contextMenuEvent(QContextMenuEvent *event) override;
+#endif // QT_NO_CONTEXTMENU
+
 private:
 
     /** user input condition for the Main Window close event

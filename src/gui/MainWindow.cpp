@@ -237,17 +237,21 @@ void gui::MainWindow::setupToolBar()
 
     lp_fileToolBar->addAction(mp_connectAction);
     lp_fileToolBar->addAction(mp_disconnectAction);
-    lp_fileToolBar->addSeparator();
-    lp_fileToolBar->addAction(mp_setSettingAction);
-    lp_fileToolBar->addSeparator();
+    QToolBar *lp_portToolBar = addToolBar(tr("Port"));
+    lp_portToolBar->addAction(mp_setSettingAction);
 #ifndef QT_NO_CLIPBOARD
-    lp_fileToolBar->addAction(mp_copyAction);
-    lp_fileToolBar->addAction(mp_pastAction);
+    QToolBar *lp_editToolBar = addToolBar(tr("Edit"));
+    lp_editToolBar->addAction(mp_copyAction);
+    lp_editToolBar->addAction(mp_pastAction);
 #endif
-    lp_fileToolBar->addAction(mp_selectAllAction);
-    lp_fileToolBar->addAction(mp_clearAction);
+    lp_editToolBar->addAction(mp_selectAllAction);
+    lp_editToolBar->addAction(mp_clearAction);
 
     addToolBar(lp_fileToolBar);
+    addToolBar(lp_portToolBar);
+    addToolBar(lp_editToolBar);
+
+
 }
 
 void gui::MainWindow::closeEvent(QCloseEvent *event)
@@ -286,3 +290,18 @@ void gui::MainWindow::close()
     QMainWindow::close();
 
 }
+
+#ifndef QT_NO_CONTEXTMENU
+void gui::MainWindow::contextMenuEvent(QContextMenuEvent *event)
+{
+    QMenu l_contextMenu(this);
+#ifndef QT_NO_CLIPBOARD
+    l_contextMenu.addAction(mp_copyAction);
+    l_contextMenu.addAction(mp_pastAction);
+#endif // !QT_NO_CLIPBOARD
+    l_contextMenu.addAction(mp_selectAllAction);
+    l_contextMenu.addSeparator();
+    l_contextMenu.addAction(mp_clearAction);
+    l_contextMenu.exec(event->globalPos());
+}
+#endif // QT_NO_CONTEXTMENU
