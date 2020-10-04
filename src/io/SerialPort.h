@@ -43,8 +43,6 @@ private slots:
 
 public:
 
-
-
     SerialPort(gui::MainWindow *ap_mainWindow = nullptr, gui::Setting *ap_setting = nullptr, gui::Console *ap_console = nullptr);
 
     ~SerialPort();
@@ -61,7 +59,6 @@ private:
     void setSerialPortParameters();
 
     QSerialPort *mp_serialPort = nullptr;
-
 
     gui::MainWindow *mp_mainWindow = nullptr;
 

@@ -39,12 +39,12 @@ io::SerialPort::~SerialPort()
 
 void io::SerialPort::setSerialPortParameters()
 {
-    mp_serialPort->setPortName(mp_setting->getPortParameters()->m_name);
-    mp_serialPort->setBaudRate(mp_setting->getPortParameters()->m_baudRate);
-    mp_serialPort->setDataBits(mp_setting->getPortParameters()->m_frameSize);
-    mp_serialPort->setParity(mp_setting->getPortParameters()->m_parityMode);
-    mp_serialPort->setStopBits(mp_setting->getPortParameters()->m_stopBits);
-    mp_serialPort->setFlowControl(mp_setting->getPortParameters()->m_flowControl);
+    mp_serialPort->setPortName(mp_setting->getPortSettings()->m_name);
+    mp_serialPort->setBaudRate(mp_setting->getPortSettings()->m_baudRate);
+    mp_serialPort->setDataBits(mp_setting->getPortSettings()->m_frameSize);
+    mp_serialPort->setParity(mp_setting->getPortSettings()->m_parityMode);
+    mp_serialPort->setStopBits(mp_setting->getPortSettings()->m_stopBits);
+    mp_serialPort->setFlowControl(mp_setting->getPortSettings()->m_flowControl);
 
 }
 void io::SerialPort::openSerialPort()
@@ -53,15 +53,15 @@ void io::SerialPort::openSerialPort()
     setSerialPortParameters();
 
     qInfo("Open connection to %s: %s, %s, %s, %s, %s, %s",
-          qUtf8Printable(mp_setting->getPortParameters()->m_name),
-          qUtf8Printable(mp_setting->getPortParameters()->m_operationModeString),
-          qUtf8Printable(mp_setting->getPortParameters()->m_baudRateString),
-          qUtf8Printable(mp_setting->getPortParameters()->m_frameSizeString),
-          qUtf8Printable(mp_setting->getPortParameters()->m_parityModeString),
-          qUtf8Printable(mp_setting->getPortParameters()->m_stopBitsString),
-          qUtf8Printable(mp_setting->getPortParameters()->m_flowControlString));
+          qUtf8Printable(mp_setting->getPortSettings()->m_name),
+          qUtf8Printable(mp_setting->getPortSettings()->m_operationModeString),
+          qUtf8Printable(mp_setting->getPortSettings()->m_baudRateString),
+          qUtf8Printable(mp_setting->getPortSettings()->m_frameSizeString),
+          qUtf8Printable(mp_setting->getPortSettings()->m_parityModeString),
+          qUtf8Printable(mp_setting->getPortSettings()->m_stopBitsString),
+          qUtf8Printable(mp_setting->getPortSettings()->m_flowControlString));
 
-    if (mp_serialPort->open(mp_setting->getPortParameters()->m_operationMode))
+    if (mp_serialPort->open(mp_setting->getPortSettings()->m_operationMode))
     {
 
         mp_console->setEnabled(true);
@@ -69,17 +69,17 @@ void io::SerialPort::openSerialPort()
         mp_mainWindow->enableConnectionAction(false);
         mp_mainWindow->enableDisconnectionAction(true);
         mp_mainWindow->showStatusMessage(tr("Connected to %1 : %2, %3, %4, %5, %6")
-                                         .arg(mp_setting->getPortParameters()->m_name).arg(mp_setting->getPortParameters()->m_baudRateString).arg(mp_setting->getPortParameters()->m_frameSizeString)
-                                         .arg(mp_setting->getPortParameters()->m_parityModeString).arg(mp_setting->getPortParameters()->m_stopBitsString).arg(mp_setting->getPortParameters()->m_flowControlString));
+                                         .arg(mp_setting->getPortSettings()->m_name).arg(mp_setting->getPortSettings()->m_baudRateString).arg(mp_setting->getPortSettings()->m_frameSizeString)
+                                         .arg(mp_setting->getPortSettings()->m_parityModeString).arg(mp_setting->getPortSettings()->m_stopBitsString).arg(mp_setting->getPortSettings()->m_flowControlString));
 
         qInfo("Connected to %s: %s, %s, %s, %s, %s, %s",
-              qUtf8Printable(mp_setting->getPortParameters()->m_name),
-              qUtf8Printable(mp_setting->getPortParameters()->m_operationModeString),
-              qUtf8Printable(mp_setting->getPortParameters()->m_baudRateString),
-              qUtf8Printable(mp_setting->getPortParameters()->m_frameSizeString),
-              qUtf8Printable(mp_setting->getPortParameters()->m_parityModeString),
-              qUtf8Printable(mp_setting->getPortParameters()->m_stopBitsString),
-              qUtf8Printable(mp_setting->getPortParameters()->m_flowControlString));
+              qUtf8Printable(mp_setting->getPortSettings()->m_name),
+              qUtf8Printable(mp_setting->getPortSettings()->m_operationModeString),
+              qUtf8Printable(mp_setting->getPortSettings()->m_baudRateString),
+              qUtf8Printable(mp_setting->getPortSettings()->m_frameSizeString),
+              qUtf8Printable(mp_setting->getPortSettings()->m_parityModeString),
+              qUtf8Printable(mp_setting->getPortSettings()->m_stopBitsString),
+              qUtf8Printable(mp_setting->getPortSettings()->m_flowControlString));
     }
 }
 
@@ -94,7 +94,7 @@ void io::SerialPort::closeSerialPort()
         mp_mainWindow->enableConnectionAction(true);
         mp_mainWindow->enableDisconnectionAction(false);
         mp_mainWindow->showStatusMessage(tr("Disconnected ..."));
-        qInfo("Close connection to %s", qUtf8Printable(mp_setting->getPortParameters()->m_name));
+        qInfo("Close connection to %s", qUtf8Printable(mp_setting->getPortSettings()->m_name));
 
     }
 
