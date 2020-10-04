@@ -1,14 +1,18 @@
-#ifndef FORMAT_H
-#define FORMAT_H
+#ifndef TEXT_FORMAT_H
+#define TEXT_FORMAT_H
 #include <QDialog>
 
 QT_BEGIN_NAMESPACE
 class QPushButton;
+class QPalette;
+class QFont;
 QT_END_NAMESPACE
+
 namespace gui
 {
 class Console;
 }
+
 namespace gui
 {
 
@@ -30,10 +34,15 @@ public slots:
 
 public:
 
-    TextFormat(QWidget *ap_parent = nullptr, gui::Console *ap_console = nullptr);
+    TextFormat(QWidget *ap_parent = nullptr, Console *ap_console = nullptr);
 
     ~TextFormat();
+
 private:
+
+    void updateTextFormat();
+
+    void cancelTextFormat();
 
     QPushButton *mp_fontButton = nullptr;
 
@@ -42,6 +51,10 @@ private:
     QPushButton *mp_backgroundColorButton = nullptr;
 
     gui::Console *mp_console = nullptr;
+
+    QFont m_consoleFont;
+
+
 
 };
 
@@ -52,4 +65,4 @@ private:
 
 
 
-#endif // CONSOLE_FORMAT_H
+#endif // TEXT_FORMAT_H
