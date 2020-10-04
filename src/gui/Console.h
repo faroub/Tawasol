@@ -8,8 +8,12 @@
 */
 #ifndef CONSOLE_H
 #define CONSOLE_H
-#include "tawasol_utils.h"
 #include <QPlainTextEdit>
+
+namespace utils
+{
+class ConfigData;
+}
 
 namespace gui
 {
@@ -33,7 +37,7 @@ public slots:
 
 public:
 
-    Console(QWidget *ap_parent = nullptr);
+    Console(QWidget *ap_parent = nullptr, utils::ConfigData *ap_ConfigData = nullptr);
 
     ~Console() override;
 
@@ -47,6 +51,9 @@ protected:
     void mouseDoubleClickEvent(QMouseEvent *e) override;
     void contextMenuEvent(QContextMenuEvent *e) override;
 private:
+
+    utils::ConfigData *mp_configData = nullptr;
+
     bool m_localEchoEnabled = false;
 };
 

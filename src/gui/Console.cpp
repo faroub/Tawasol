@@ -1,11 +1,14 @@
 #include <QDebug>
 #include <QScrollBar>
 #include "Console.h"
+#include "ConfigData.h"
 
 
-gui::Console::Console(QWidget *ap_parent)
-            : QPlainTextEdit(ap_parent)
+gui::Console::Console(QWidget *ap_parent, utils::ConfigData *ap_ConfigData)
+             : QPlainTextEdit(ap_parent),
+               mp_configData(ap_ConfigData)
 {
+
     QPalette p = palette();
     p.setColor(QPalette::Base, Qt::black);
     p.setColor(QPalette::Text, Qt::white);
