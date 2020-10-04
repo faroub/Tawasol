@@ -17,15 +17,15 @@ gui::LogFile::LogFile(QWidget *ap_parent) :
 {
 
     QPushButton *lp_okButton = new QPushButton(tr("OK"));
-
     QPushButton *lp_cancelButton = new QPushButton(tr("Cancel"));
 
     QHBoxLayout *lp_hLayout = new QHBoxLayout();
-
     lp_hLayout->addWidget(lp_okButton);
     lp_hLayout->addWidget(lp_cancelButton);
 
     QLabel *lp_logsDirectoryLabel = new QLabel(tr("Logs directory:"));
+    lp_logsDirectoryLabel->setAlignment(Qt::AlignRight);
+
 
     mp_logsDirectoryComboBox = new QComboBox();
     mp_logsDirectoryComboBox->setEditable(true);
@@ -35,12 +35,16 @@ gui::LogFile::LogFile(QWidget *ap_parent) :
     QPushButton *lp_browseButton = new QPushButton(tr("&Browse..."));
 
     QLabel *lp_logFileNumberLabel = new QLabel(tr("Log files number:"));
+    lp_logFileNumberLabel->setAlignment(Qt::AlignRight);
+
 
     mp_logFileNumberSpinBox = new QSpinBox();
     mp_logFileNumberSpinBox->setRange(0, 100);
     mp_logFileNumberSpinBox->setValue(utils::Log::getLogFileNumber());
 
     QLabel *lp_logFileSizeLabel = new QLabel(tr("Log file size:"));
+    lp_logFileSizeLabel->setAlignment(Qt::AlignRight);
+
 
     mp_logFileSizeField = new QLineEdit();
     mp_logFileSizeField->setValidator(new QIntValidator(0,10000,mp_logFileSizeField));
@@ -49,16 +53,15 @@ gui::LogFile::LogFile(QWidget *ap_parent) :
     QLabel *lp_logFileSizeUnitLabel = new QLabel(tr("kB"));
 
 
-    QGroupBox *lp_selectLogDirectoryGroupBox = new QGroupBox();
 
-    QGridLayout *lp_selectLogDirectoryGridLayout = new QGridLayout(lp_selectLogDirectoryGroupBox);
+    QGridLayout *lp_selectLogDirectoryGridLayout = new QGridLayout();
 
     lp_selectLogDirectoryGridLayout->addWidget(lp_logsDirectoryLabel,0,0,1,1);
     lp_selectLogDirectoryGridLayout->addWidget(mp_logsDirectoryComboBox,0,1,1,8);
     lp_selectLogDirectoryGridLayout->addWidget(lp_browseButton,0,9,1,1);
 
     lp_selectLogDirectoryGridLayout->addWidget(lp_logFileNumberLabel,1,0,1,1);
-    lp_selectLogDirectoryGridLayout->addWidget(mp_logFileNumberSpinBox,1,1,1,2);
+    lp_selectLogDirectoryGridLayout->addWidget(mp_logFileNumberSpinBox,1,1,1,1);
 
     lp_selectLogDirectoryGridLayout->addWidget(lp_logFileSizeLabel,2,0,1,1);
     lp_selectLogDirectoryGridLayout->addWidget(mp_logFileSizeField,2,1,1,2);
@@ -67,8 +70,8 @@ gui::LogFile::LogFile(QWidget *ap_parent) :
     QGridLayout *lp_logFileGridLayout = new QGridLayout();
 
 
-    lp_logFileGridLayout->addWidget(lp_selectLogDirectoryGroupBox,0,0,1,12);
-    lp_logFileGridLayout->addLayout(lp_hLayout,1,10,1,2);
+    lp_logFileGridLayout->addLayout(lp_selectLogDirectoryGridLayout,0,0,1,10);
+    lp_logFileGridLayout->addLayout(lp_hLayout,1,8,1,2);
 
 
     connect(lp_browseButton, &QPushButton::clicked, this, &LogFile::browse);
