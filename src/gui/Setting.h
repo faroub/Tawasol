@@ -8,7 +8,6 @@
 */
 #ifndef SETTING_H
 #define SETTING_H
-#include "tawasol_utils.h"
 #include <QDialog>
 #include <QtSerialPort/QSerialPort>
 
@@ -19,6 +18,12 @@ class QGridLayout;
 class QLabel;
 class QIntValidator;
 QT_END_NAMESPACE
+
+namespace utils
+{
+class ConfigData;
+}
+
 
 namespace gui
 {
@@ -45,7 +50,7 @@ private slots:
 
 public:
 
-    struct portParameters {
+    struct portSettings {
         QString m_name;
         QSerialPort::OpenModeFlag m_operationMode;
         QString m_operationModeString;
@@ -61,12 +66,11 @@ public:
         QString m_flowControlString;
     };
 
-    Setting(QWidget *ap_parent = nullptr);
+    Setting(QWidget *ap_parent = nullptr, utils::ConfigData *ap_ConfigData = nullptr);
 
     ~Setting();
 
-
-    portParameters* getPortParameters();
+    portSettings* getPortSettings();
 
 protected:
 
@@ -79,21 +83,11 @@ private:
 
     void fillPortParameters();
 
-    portParameters *mp_portParameters;
+    utils::ConfigData *mp_configData = nullptr;
+
+    portSettings *mp_portSettings;
 
     QComboBox *mp_portComboBox = nullptr;
-
-    QComboBox *mp_operationModeComboBox = nullptr;
-
-    QComboBox *mp_baudRateComboBox = nullptr;
-
-    QComboBox *mp_frameSizeComboBox = nullptr;
-
-    QComboBox *mp_parityModeComboBox = nullptr;
-
-    QComboBox *mp_stopBitsComboBox = nullptr;
-
-    QComboBox *mp_flowControlComboBox = nullptr;
 
     QLabel *mp_descriptionLabel = nullptr;
 
@@ -107,7 +101,22 @@ private:
 
     QLabel *mp_productIDLabel = nullptr;
 
+    QComboBox *mp_operationModeComboBox = nullptr;
+
+    QComboBox *mp_baudRateComboBox = nullptr;
+
     QIntValidator *mp_baudRateValidator = nullptr;
+
+    QComboBox *mp_frameSizeComboBox = nullptr;
+
+    QComboBox *mp_parityModeComboBox = nullptr;
+
+    QComboBox *mp_stopBitsComboBox = nullptr;
+
+    QComboBox *mp_flowControlComboBox = nullptr;
+
+
+
 
 
 

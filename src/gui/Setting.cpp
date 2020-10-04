@@ -16,14 +16,29 @@
 
 
 
-gui::Setting::Setting(QWidget *ap_parent) :
-    QDialog(ap_parent)
+gui::Setting::Setting(QWidget *ap_parent, utils::ConfigData *ap_ConfigData)
+             : QDialog(ap_parent),
+               mp_configData(ap_ConfigData),
+               mp_portSettings(new portSettings()),
+               mp_portComboBox(new QComboBox()),
+               mp_descriptionLabel(new QLabel()),
+               mp_manufacturerLabel(new QLabel()),
+               mp_serialNumberLabel(new QLabel()),
+               mp_locationLabel(new QLabel()),
+               mp_vendorIDLabel(new QLabel()),
+               mp_productIDLabel(new QLabel()),
+               mp_operationModeComboBox(new QComboBox()),
+               mp_baudRateComboBox(new QComboBox()),
+               mp_baudRateValidator(new QIntValidator(0, 4000000, mp_baudRateComboBox)),
+               mp_frameSizeComboBox(new QComboBox()),
+               mp_parityModeComboBox(new QComboBox()),
+               mp_stopBitsComboBox(new QComboBox()),
+               mp_flowControlComboBox(new QComboBox())
 {
 
-    mp_portParameters = new portParameters();
+
 
     QGridLayout *lp_settingGridLayout = new QGridLayout();
-
 
     QGroupBox *lp_selectPortGroupBox = new QGroupBox(tr("Select Port"));
     QGridLayout *lp_selectPortGridLayout = new QGridLayout(lp_selectPortGroupBox);
@@ -31,22 +46,7 @@ gui::Setting::Setting(QWidget *ap_parent) :
     QGroupBox *lp_selectPortParametersGroupBox = new QGroupBox(tr("Select Port Parameters"));
     QGridLayout *lp_selectPortParametersGridLayout = new QGridLayout(lp_selectPortParametersGroupBox);
 
-    mp_portComboBox = new QComboBox();
-
     QPushButton *lp_refreshButton = new QPushButton(tr("Refresh"));
-
-    mp_descriptionLabel = new QLabel();
-
-    mp_manufacturerLabel = new QLabel();
-
-    mp_serialNumberLabel = new QLabel();
-
-    mp_locationLabel = new QLabel();
-
-    mp_vendorIDLabel = new QLabel();
-
-    mp_productIDLabel = new QLabel();
-
 
     lp_selectPortGridLayout->addWidget(mp_portComboBox,0,0);
     lp_selectPortGridLayout->addWidget(lp_refreshButton,0,1);
@@ -59,31 +59,35 @@ gui::Setting::Setting(QWidget *ap_parent) :
     lp_selectPortGridLayout->addWidget(mp_productIDLabel,6,0);
 
 
-    mp_operationModeComboBox = new QComboBox();
 
-    QLabel *lp_operationModeLabel = new QLabel(tr("Mode"));
+    QLabel *lp_operationModeLabel = new QLabel(tr("Mode:"));
+    lp_operationModeLabel->setAlignment(Qt::AlignRight);
 
-    mp_baudRateComboBox = new QComboBox();
 
-    mp_baudRateValidator = new QIntValidator(0, 4000000, mp_baudRateComboBox);
 
-    QLabel *lp_baudRateLabel = new QLabel(tr("Baud rate"));
 
-    mp_frameSizeComboBox = new QComboBox();
+    QLabel *lp_baudRateLabel = new QLabel(tr("Baud rate:"));
+    lp_baudRateLabel->setAlignment(Qt::AlignRight);
 
-    QLabel *lp_frameSizeLabel = new QLabel(tr("Frame size"));
 
-    mp_parityModeComboBox = new QComboBox();
 
-    QLabel *lp_parityModeLabel = new QLabel(tr("Parity mode"));
+    QLabel *lp_frameSizeLabel = new QLabel(tr("Frame size:"));
+    lp_frameSizeLabel->setAlignment(Qt::AlignRight);
 
-    mp_stopBitsComboBox = new QComboBox();
 
-    QLabel *lp_stopBitsLabel = new QLabel(tr("Stop bits"));
 
-    mp_flowControlComboBox = new QComboBox();
+    QLabel *lp_parityModeLabel = new QLabel(tr("Parity mode:"));
+    lp_parityModeLabel->setAlignment(Qt::AlignRight);
 
-    QLabel *lp_flowControlLabel = new QLabel(tr("Flow control"));
+
+
+    QLabel *lp_stopBitsLabel = new QLabel(tr("Stop bits:"));
+    lp_stopBitsLabel->setAlignment(Qt::AlignRight);
+
+
+    QLabel *lp_flowControlLabel = new QLabel(tr("Flow control:"));
+    lp_flowControlLabel->setAlignment(Qt::AlignRight);
+
 
     lp_selectPortParametersGridLayout->addWidget(lp_operationModeLabel,0,0);
     lp_selectPortParametersGridLayout->addWidget(mp_operationModeComboBox,0,1);
@@ -122,12 +126,6 @@ gui::Setting::Setting(QWidget *ap_parent) :
     connect(mp_portComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged),
             this, &Setting::checkCustomPortPath);
 
-
-    fillPortParameters();
-    updatePortsInfo();
-    updatePortParameters();
-
-
     setModal(true);
 
     setLayout(lp_settingGridLayout);
@@ -136,6 +134,10 @@ gui::Setting::Setting(QWidget *ap_parent) :
     setFixedSize(sizeHint().width(),sizeHint().height());
 
     setWindowTitle(tr("Port Settings"));
+
+    fillPortParameters();
+    updatePortsInfo();
+    updatePortParameters();
 
 }
 
@@ -167,45 +169,45 @@ void gui::Setting::update()
 
 void gui::Setting::updatePortParameters()
 {
-    mp_portParameters->m_name =  mp_portComboBox->currentText();
+    mp_portSettings->m_name =  mp_portComboBox->currentText();
 
-    mp_portParameters->m_operationMode = static_cast<QSerialPort::OpenModeFlag>(
+    mp_portSettings->m_operationMode = static_cast<QSerialPort::OpenModeFlag>(
                 mp_operationModeComboBox->itemData(mp_operationModeComboBox->currentIndex()).toInt());
-    mp_portParameters->m_operationModeString = mp_operationModeComboBox->currentText();
+    mp_portSettings->m_operationModeString = mp_operationModeComboBox->currentText();
 
     if (mp_baudRateComboBox->currentIndex() == 8) {
-        mp_portParameters->m_baudRate = mp_baudRateComboBox->currentText().toInt();
+        mp_portSettings->m_baudRate = mp_baudRateComboBox->currentText().toInt();
     } else
     {
-        mp_portParameters->m_baudRate = static_cast<QSerialPort::BaudRate>(
+        mp_portSettings->m_baudRate = static_cast<QSerialPort::BaudRate>(
                     mp_baudRateComboBox->itemData(mp_baudRateComboBox->currentIndex()).toInt());
     }
-    mp_portParameters->m_baudRateString = QString::number(mp_portParameters->m_baudRate);
+    mp_portSettings->m_baudRateString = QString::number(mp_portSettings->m_baudRate);
 
-    mp_portParameters->m_frameSize = static_cast<QSerialPort::DataBits>(
+    mp_portSettings->m_frameSize = static_cast<QSerialPort::DataBits>(
                 mp_frameSizeComboBox->itemData(mp_frameSizeComboBox->currentIndex()).toInt());
-    mp_portParameters->m_frameSizeString = mp_frameSizeComboBox->currentText();
+    mp_portSettings->m_frameSizeString = mp_frameSizeComboBox->currentText();
 
-    mp_portParameters->m_parityMode = static_cast<QSerialPort::Parity>(
+    mp_portSettings->m_parityMode = static_cast<QSerialPort::Parity>(
                 mp_parityModeComboBox->itemData(mp_parityModeComboBox->currentIndex()).toInt());
-    mp_portParameters->m_parityModeString = mp_parityModeComboBox->currentText();
+    mp_portSettings->m_parityModeString = mp_parityModeComboBox->currentText();
 
-    mp_portParameters->m_stopBits = static_cast<QSerialPort::StopBits>(
+    mp_portSettings->m_stopBits = static_cast<QSerialPort::StopBits>(
                 mp_stopBitsComboBox->itemData(mp_stopBitsComboBox->currentIndex()).toInt());
-    mp_portParameters->m_stopBitsString = mp_stopBitsComboBox->currentText();
+    mp_portSettings->m_stopBitsString = mp_stopBitsComboBox->currentText();
 
-    mp_portParameters->m_flowControl = static_cast<QSerialPort::FlowControl>(
+    mp_portSettings->m_flowControl = static_cast<QSerialPort::FlowControl>(
                 mp_flowControlComboBox->itemData(mp_flowControlComboBox->currentIndex()).toInt());
-    mp_portParameters->m_flowControlString = mp_flowControlComboBox->currentText();
+    mp_portSettings->m_flowControlString = mp_flowControlComboBox->currentText();
 
 
     qInfo("Update port %s: %s, %s, %s, %s, %s",
-          qUtf8Printable(mp_portParameters->m_name),
-          qUtf8Printable(mp_portParameters->m_baudRateString),
-          qUtf8Printable(mp_portParameters->m_frameSizeString),
-          qUtf8Printable(mp_portParameters->m_parityModeString),
-          qUtf8Printable(mp_portParameters->m_stopBitsString),
-          qUtf8Printable(mp_portParameters->m_flowControlString));
+          qUtf8Printable(mp_portSettings->m_name),
+          qUtf8Printable(mp_portSettings->m_baudRateString),
+          qUtf8Printable(mp_portSettings->m_frameSizeString),
+          qUtf8Printable(mp_portSettings->m_parityModeString),
+          qUtf8Printable(mp_portSettings->m_stopBitsString),
+          qUtf8Printable(mp_portSettings->m_flowControlString));
 
 }
 
@@ -289,6 +291,9 @@ void gui::Setting::fillPortParameters()
     mp_operationModeComboBox->addItem(tr("ReadWrite"),QSerialPort::ReadWrite);
     mp_operationModeComboBox->addItem(tr("ReadOnly"),QSerialPort::ReadOnly);
     mp_operationModeComboBox->addItem(tr("WriteOnly"),QSerialPort::WriteOnly);
+    mp_operationModeComboBox->setCurrentIndex(0);
+    //mp_operationModeComboBox->setCurrentText("ReadWrite");
+
 
     mp_baudRateComboBox->addItem("1200",QSerialPort::Baud1200);
     mp_baudRateComboBox->addItem("2400",QSerialPort::Baud2400);
@@ -331,9 +336,9 @@ void gui::Setting::fillPortParameters()
 
 }
 
-gui::Setting::portParameters *gui::Setting::getPortParameters()
+gui::Setting::portSettings *gui::Setting::getPortSettings()
 {
-    return mp_portParameters;
+    return mp_portSettings;
 }
 
 void gui::Setting::close()
