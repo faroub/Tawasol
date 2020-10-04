@@ -13,5 +13,6 @@
         <file>text_format.png</file>
         <file>ascii.png</file>
         <file>hex.png</file>
+        <file>settings_file.png</file>
     </qresource>
 </RCC>
