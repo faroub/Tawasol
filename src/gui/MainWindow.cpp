@@ -11,6 +11,10 @@
 #include "SerialPort.h"
 #include "LogFile.h"
 #include "TextFormat.h"
+#include "LoadConfig.h"
+#include "SaveConfig.h"
+#include "DeleteConfig.h"
+#include "ConfigData.h"
 
 
 
@@ -18,10 +22,14 @@
 
 
 gui::MainWindow::MainWindow()
-                : mp_setting(new Setting(this)),
-                  mp_console(new Console(this)),
+                : mp_configData(new utils::ConfigData()),
+                  mp_setting(new Setting(this,mp_configData)),
+                  mp_console(new Console(this,mp_configData)),
                   mp_logFile(new LogFile(this)),
                   mp_textFormat(new TextFormat(this,mp_console)),
+                  mp_loadConfig(new LoadConfig(this)),
+                  mp_saveConfig(new SaveConfig(this)),
+                  mp_deleteConfig(new DeleteConfig(this)),
                   mp_serialPort(new io::SerialPort(this,mp_setting, mp_console)),
                   mp_statusMessage(new QLabel("Disconnected ...",this))
 
@@ -134,6 +142,9 @@ void gui::MainWindow::setupMenuBar()
 
     lp_menuSetting->addAction(mp_setSettingAction);
     lp_menuSetting->addAction(mp_setLocalEchoAction);
+    lp_menuSetting->addAction(mp_loadConfigAction);
+    lp_menuSetting->addAction(mp_saveConfigAction);
+    lp_menuSetting->addAction(mp_deleteConfigAction);
 
     QMenu *lp_menuView = menuBar()->addMenu(tr("&View"));
 
@@ -226,6 +237,18 @@ void gui::MainWindow::setupActions()
     mp_hexAction->setCheckable(true);
     lp_actionGroup->addAction(mp_hexAction);
     mp_asciiAction->setChecked(true);
+
+    mp_loadConfigAction = new QAction(QIcon(":/settings_file.png"),tr("Load Confi&guration"), this);
+    connect(mp_loadConfigAction, SIGNAL(triggered()), mp_loadConfig, SLOT(open()));
+    mp_loadConfigAction->setShortcut(Qt::CTRL + Qt::Key_G);
+
+    mp_saveConfigAction = new QAction(QIcon(":/settings_file.png"),tr("Sa&ve Configuration"), this);
+    connect(mp_saveConfigAction, SIGNAL(triggered()), mp_saveConfig, SLOT(open()));
+    mp_saveConfigAction->setShortcut(Qt::CTRL + Qt::Key_V);
+
+    mp_deleteConfigAction = new QAction(QIcon(":/settings_file.png"),tr("Dele&te Configuration"), this);
+    connect(mp_deleteConfigAction, SIGNAL(triggered()), mp_deleteConfig, SLOT(open()));
+    mp_deleteConfigAction->setShortcut(Qt::CTRL + Qt::Key_T);
 }
 
 void gui::MainWindow::setupToolBar()

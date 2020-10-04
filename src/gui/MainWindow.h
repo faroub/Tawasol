@@ -21,15 +21,24 @@ class Setting;
 class Console;
 class LogFile;
 class TextFormat;
+class LoadConfig;
+class SaveConfig;
+class DeleteConfig;
 }
 namespace io
 {
 class SerialPort;
 }
+
+namespace utils
+{
+class ConfigData;
+}
+
+
 namespace gui
 {
 
-// TODO: void Window::contextMenu(const QPoint &pos)
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -83,6 +92,7 @@ private:
 
     void setupToolBar();
 
+    utils::ConfigData *mp_configData = nullptr;
 
     Setting *mp_setting = nullptr;
 
@@ -91,6 +101,12 @@ private:
     LogFile *mp_logFile = nullptr;
 
     TextFormat *mp_textFormat = nullptr;
+
+    LoadConfig *mp_loadConfig = nullptr;
+
+    SaveConfig *mp_saveConfig = nullptr;
+
+    DeleteConfig *mp_deleteConfig = nullptr;
 
     io::SerialPort *mp_serialPort = nullptr;
 
@@ -103,6 +119,12 @@ private:
     QAction *mp_setSettingAction = nullptr;
 
     QAction *mp_setLocalEchoAction = nullptr;
+
+    QAction *mp_loadConfigAction = nullptr;
+
+    QAction *mp_saveConfigAction = nullptr;
+
+    QAction *mp_deleteConfigAction = nullptr;
     
     QAction *mp_clearAction = nullptr;
 
