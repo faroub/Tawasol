@@ -1,3 +1,9 @@
+#include <QString>
+#include <QFile>
+#include <QCoreApplication>
+#include <QDir>
+#include <QDate>
+#include <QTime>
 #include "Log.h"
 
 QString utils::Log::m_logsFolderName = "logs";
