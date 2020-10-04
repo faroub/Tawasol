@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configData>
+
+	<portSetting>
+    		<operationMode>ReadWrite</operationMode>
+    		<baudRate>9600</baudRate>
+    		<frameSize>8</frameSize>
+    		<parityMode>None</parityMode>
+    		<stopBits>1</stopBits>
+		<flowControl>None</flowControl>
+	</portSetting>
+
+  	<consoleSetting>
+		<consoleFontFamily>Ubuntu</consoleFontFamily>
+		<consoleFontSize>11</consoleFontSize>
+		<consoleFontColor>white</consoleFontColor>
+		<consoleBackgroundColor>black</consoleBackgroundColor>
+	</consoleSetting>
+
+</configData>
